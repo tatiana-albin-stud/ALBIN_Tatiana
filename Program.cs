@@ -18,6 +18,9 @@ namespace ALBIN_Tatiana
 
         private const int XYZ_SIZE = 75;
 
+        Color colorVertex1 ;
+        Color colorVertex2 ;
+        Color colorVertex3 ;
         public ImmediateMode() : base(800, 600, new GraphicsMode(32, 24, 0, 8))
         {
             VSync = VSyncMode.On;
@@ -26,7 +29,16 @@ namespace ALBIN_Tatiana
             Title = "OpenGl versiunea: " + GL.GetString(StringName.Version) + " (mod imediat)";
 
         }
+        Color GetRandomColor()
+        {
+            Random random = new Random();
+            int randR = random.Next(0, 256);
+            int randG = random.Next(0, 256);
+            int randB = random.Next(0, 256);
 
+            Color color = Color.FromArgb(randR, randG, randB);
+            return color;
+        }
         /**Setare mediu OpenGL și încarcarea resurselor (dacă e necesar) - de exemplu culoarea de
            fundal a ferestrei 3D.
            Atenție! Acest cod se execută înainte de desenarea efectivă a scenei 3D. */
@@ -34,7 +46,7 @@ namespace ALBIN_Tatiana
         {
             base.OnLoad(e);
 
-            GL.ClearColor(Color.Blue);
+            GL.ClearColor(Color.White);
             GL.Enable(EnableCap.DepthTest);
             GL.DepthFunc(DepthFunction.Less);
             GL.Hint(HintTarget.PolygonSmoothHint, HintMode.Nicest);
@@ -56,7 +68,7 @@ namespace ALBIN_Tatiana
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref perspective);
 
-            Matrix4 lookat = Matrix4.LookAt(30, 30, 30, 0, 0, 0, 0, 1, 0);
+            Matrix4 lookat = Matrix4.LookAt( 45, 45, 0, 0, 0, 0, 0, 1, 0);
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadMatrix(ref lookat);
 
@@ -68,6 +80,7 @@ namespace ALBIN_Tatiana
         protected override void OnUpdateFrame(FrameEventArgs e)
         {
             base.OnUpdateFrame(e);
+           
 
             KeyboardState keyboard = Keyboard.GetState();
             MouseState mouse = Mouse.GetState();
@@ -85,13 +98,20 @@ namespace ALBIN_Tatiana
                  GL.MatrixMode(MatrixMode.Modelview);
                  GL.LoadMatrix(ref lookat);
              }
+             if (keyboard[Key.K])
+            {
+                colorVertex1 = GetRandomColor();
+                colorVertex2 = GetRandomColor();
+                colorVertex3 = GetRandomColor();
+                
+                Console.WriteLine(colorVertex1 + " " + colorVertex2 + " " + colorVertex3);
+            }
+            //8.mouse-ul
+             Matrix4 lookat1 = Matrix4.LookAt(mouse.X, mouse.Y, 30, 0, 0, 0, 0, 1, 0);
+             GL.MatrixMode(MatrixMode.Modelview);
+             GL.LoadMatrix(ref lookat1);
             
-            //mouse-ul
-           /* Matrix4 lookat1 = Matrix4.LookAt(mouse.X, mouse.Y, 30, 0, 0, 0, 0, 1, 0);
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadMatrix(ref lookat1);
-           */
-           
+
 
             if (keyboard[Key.Escape])
             {
@@ -136,27 +156,123 @@ namespace ALBIN_Tatiana
             GL.Color3(Color.Red);
             GL.Vertex3(0, 0, 0);
             GL.Vertex3(XYZ_SIZE, 0, 0);
-            GL.End();
+            
+           
 
             // Desenează axa Oy (cu galben).
-            GL.Begin(PrimitiveType.Lines);
             GL.Color3(Color.Yellow);
             GL.Vertex3(0, 0, 0);
             GL.Vertex3(0, XYZ_SIZE, 0); ;
-            GL.End();
 
             // Desenează axa Oz (cu verde).
-            GL.Begin(PrimitiveType.Lines);
+            
             GL.Color3(Color.Green);
             GL.Vertex3(0, 0, 0);
             GL.Vertex3(0, 0, XYZ_SIZE);
             GL.End();
+
+            
         }
 
         private void DrawObjects()
         {
+            GL.PointSize(8);
 
+            //GL.Begin(PrimitiveType.Points);
+            //GL.Color3(1, 0, 0);
+            //GL.Vertex3(3, 5, 8);
 
+            // GL.End();
+            //  
+            //1.Triangle
+            /*
+             * 
+             GL.Begin(PrimitiveType.Triangles);
+             GL.Color3(Color.Red);
+             GL.Vertex3(22, 13, 16);
+             GL.Color3(Color.ForestGreen);
+             GL.Vertex3(15, 16, 28);
+             GL.Color3(Color.Aqua);
+             GL.Vertex3(3, 8, 12);
+             GL.End();
+            */
+            //3.
+            /*
+            * GL.Color3(Color.Brown);
+
+              GL.LineWidth((float)86);
+              GL.Begin(PrimitiveType.Lines);
+              GL.Vertex3(3, 8, 12);
+              GL.Vertex3(16, 15, 25);
+              GL.End();
+              GL.LineWidth((float)1);
+
+              GL.Color3(Color.CadetBlue);
+              GL.PointSize((float)15.2);
+              GL.Begin(PrimitiveType.Points);
+              GL.Vertex3(5, 8, 10);
+              GL.End();
+            */
+            //4.LineLoop
+            /*
+            GL.Color3(Color.Gold);
+            GL.LineWidth(6);
+            GL.Begin(PrimitiveType.LineLoop);
+            GL.Vertex3(13, 15, 25);
+            GL.Vertex3(2, 6, 12);
+            GL.Vertex3(24, 32, 16);
+            GL.End();
+            */
+            //4.LineStrip
+            /*
+            GL.Color3(Color.Khaki);
+            GL.LineWidth(6);
+            GL.Begin(PrimitiveType.LineStrip);
+            GL.Vertex3(13, 15, 15);
+            GL.Vertex3(12, 16, 12);
+            GL.Vertex3(14, 12, 16);
+            GL.Vertex3(15, 16, 18);
+            GL.End();
+            */
+            //4. TriangleStrip
+            /* 
+             GL.Color3(Color.Black);
+             GL.Begin(PrimitiveType.TriangleStrip);
+             GL.Vertex3(13, 15, 15);
+             GL.Vertex3(12, 16, 12);
+             GL.Vertex3(14, 12, 16);
+             GL.Color3(Color.Yellow);
+             GL.Vertex3(23, 25, 25);
+             GL.Vertex3(22, 26, 22);
+             GL.Vertex3(24, 22, 26);
+             GL.End();
+            */
+            //4. TriangleFan
+            /* 
+             GL.Color3(Color.Black);
+             GL.Begin(PrimitiveType.TriangleFan);
+             GL.Vertex3(13, 15, 15);
+             GL.Vertex3(12, 16, 12);
+             GL.Vertex3(14, 12, 16);
+             GL.Color3(Color.Yellow);
+             GL.Vertex3(13, 15, 15);
+             GL.Vertex3(22, 26, 22);
+             GL.Vertex3(24, 22, 26);
+             GL.Color3(Color.Green);
+             GL.Vertex3(13, 15, 15);
+             GL.Vertex3(32, 26, 22);
+             GL.Vertex3(38, 22, 26);
+             GL.End();
+            */
+            //9.Triangles with random
+            GL.Color4(colorVertex1);
+            GL.Begin(PrimitiveType.Triangles);
+            GL.Vertex3(12, 23, 30);
+            GL.Color4(colorVertex2);
+            GL.Vertex3(13, 25, 35);
+            GL.Color4(colorVertex3);
+            GL.Vertex3(25, 35, 40);
+            GL.End();
 
         }
 
