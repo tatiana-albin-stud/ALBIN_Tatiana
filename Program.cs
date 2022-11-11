@@ -100,17 +100,19 @@ namespace ALBIN_Tatiana
              }
              if (keyboard[Key.K])
             {
+                //Update:) - o generare mai interesanta a culorilor
                 colorVertex1 = GetRandomColor();
-                colorVertex2 = GetRandomColor();
-                colorVertex3 = GetRandomColor();
+                colorVertex2 = Color.FromArgb(colorVertex1.B, colorVertex1.R, colorVertex1.G);
+                colorVertex3 = Color.FromArgb(colorVertex2.B, colorVertex2.G, colorVertex2.R);
                 
                 Console.WriteLine(colorVertex1 + " " + colorVertex2 + " " + colorVertex3);
             }
             //8.mouse-ul
-             Matrix4 lookat1 = Matrix4.LookAt(mouse.X, mouse.Y, 30, 0, 0, 0, 0, 1, 0);
+            /*
+            Matrix4 lookat1 = Matrix4.LookAt(mouse.X, mouse.Y, 30, 0, 0, 0, 0, 1, 0);
              GL.MatrixMode(MatrixMode.Modelview);
              GL.LoadMatrix(ref lookat1);
-            
+            */
 
 
             if (keyboard[Key.Escape])
@@ -267,11 +269,11 @@ namespace ALBIN_Tatiana
             //9.Triangles with random
             GL.Color4(colorVertex1);
             GL.Begin(PrimitiveType.Triangles);
-            GL.Vertex3(12, 23, 30);
+            GL.Vertex3(32, 12, 30);
             GL.Color4(colorVertex2);
-            GL.Vertex3(13, 25, 35);
+            GL.Vertex3(38, 18, 30);
             GL.Color4(colorVertex3);
-            GL.Vertex3(25, 35, 40);
+            GL.Vertex3(44, 12, 30);
             GL.End();
 
         }
